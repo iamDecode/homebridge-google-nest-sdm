@@ -21,6 +21,18 @@ export class Camera extends Device {
 
     onMotion: (() => void) | undefined;
 
+    async turnOff() {
+        const generateResponse = await this.executeCommand<Commands.DeviceCommandOnOff, Responses.GenerateImage>(Commands.Constants.DeviceCommandOnOff, {
+            on: false
+        });
+    }
+
+    async turnOn() {
+        const generateResponse = await this.executeCommand<Commands.DeviceCommandOnOff, Responses.GenerateImage>(Commands.Constants.DeviceCommandOnOff, {
+            on: true
+        });
+    }
+
     async getSnapshot(): Promise<Buffer | undefined> {
         if (this.image) return this.image;
 

@@ -11,7 +11,8 @@ export enum Constants {
     CameraLiveStream_StopRtspStream = 'sdm.devices.commands.CameraLiveStream.StopRtspStream',
     CameraLiveStream_GenerateWebRtcStream = 'sdm.devices.commands.CameraLiveStream.GenerateWebRtcStream',
     CameraLiveStream_StopWebRtcStream = 'sdm.devices.commands.CameraLiveStream.StopWebRtcStream',
-    CameraEventImage_GenerateImage = 'sdm.devices.commands.CameraEventImage.GenerateImage'
+    CameraEventImage_GenerateImage = 'sdm.devices.commands.CameraEventImage.GenerateImage',
+    DeviceCommandOnOff = 'device.command.OnOff',
 }
 
 export interface ThermostatTemperatureSetpoint_SetHeat {
@@ -54,4 +55,8 @@ export interface CameraLiveStream_GenerateWebRtcStream {
 
 export interface CameraLiveStream_StopWebRtcStream {
     mediaSessionId: string;
+}
+
+export interface DeviceCommandOnOff {
+    on: boolean;
 }
