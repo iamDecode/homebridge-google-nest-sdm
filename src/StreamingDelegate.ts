@@ -18,7 +18,7 @@ import {
   StreamRequestCallback,
   StreamRequestTypes, VideoInfo
 } from 'homebridge';
-import { VideoCodecType } from 'hap-nodejs'
+import { VideoCodecType, Characteristic } from 'hap-nodejs'
 import {createSocket, Socket} from 'dgram';
 import os from 'os';
 import {networkInterfaceDefault} from 'systeminformation';
@@ -162,6 +162,27 @@ export abstract class StreamingDelegate<T extends CameraController> implements C
         }
       }
     };
+
+    const onOperationModeChange = () => {
+      if (this.controller.recordingManagement == null) return;
+      
+      const operatingMode = this.controller.recordingManagement.operatingModeService.getCharacteristic(Characteristic.HomeKitCameraActive).value;
+
+      if (operatingMode == Characteristic.HomeKitCameraActive.ON) {
+        this.log.warn("CUSTOM SHOULD TURN GOOGLE HOME ON");
+      } else if (operatingMode == Characteristic.HomeKitCameraActive.OFF) {
+        this.log.warn("CUSTOM SHOULD TURN GOOGLE HOME OFF");
+      }
+    }
+
+    this.controller.recordingManagement?.operatingModeService.on("service-configurationChange", () => {
+      this.log.warn('CUSTOM configuration changed!')
+      onOperationModeChange();
+    });
+    this.controller.recordingManagement?.operatingModeService.on("characteristic-change", (characteristic) => {
+      this.log.warn('CUSTOM characteristics changed!', characteristic.newValue);
+      onOperationModeChange();
+    })
   }
 
   abstract getController(): T;
